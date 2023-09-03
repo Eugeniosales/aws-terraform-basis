@@ -6,7 +6,7 @@ resource "aws_ecs_task_definition" "practice_task_definition" {
   memory                   = 2048
   container_definitions = jsonencode([
     {
-      name      = "nginx"
+      name      = "practice-app"
       image     = var.TASK_IMAGE
       essential = true
       portMappings = [
