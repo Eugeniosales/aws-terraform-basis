@@ -27,7 +27,7 @@ resource "aws_iam_role_policy_attachment" "practice-AmazonEKSVPCResourceControll
 }
 
 resource "aws_iam_role" "practice_eks_fargate_profile_iam_role" {
-  name = "practiece-eks-fargate-profile"
+  name = "practice-eks-fargate-profile"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -44,4 +44,34 @@ resource "aws_iam_role" "practice_eks_fargate_profile_iam_role" {
 resource "aws_iam_role_policy_attachment" "example-AmazonEKSFargatePodExecutionRolePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.practice_eks_fargate_profile_iam_role.name
+}
+
+resource "aws_iam_role" "node_group_practice_iam_role" {
+  name = "eks-node-group-example"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "practice-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.node_group_practice_iam_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "practice-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.node_group_practice_iam_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "practice-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.node_group_practice_iam_role.name
 }
