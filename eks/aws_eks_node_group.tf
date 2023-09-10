@@ -10,7 +10,7 @@ resource "aws_eks_node_group" "first_eks_node_group" {
     min_size     = 1
   }
 
-  instance_types  = ["t2.micro"]
+  instance_types = ["t2.micro"]
 
   update_config {
     max_unavailable = 1
